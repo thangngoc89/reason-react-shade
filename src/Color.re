@@ -9,3 +9,6 @@ external gradient :
   "gradient";
 
 [@bs.module "./ColorProcess.js"] external hsl : string => hslModel = "hsl";
+
+[@bs.module "./ColorProcess.js"] external hex_of_hsl : (float, float, float) => string =
+  "hex_of_hsl";

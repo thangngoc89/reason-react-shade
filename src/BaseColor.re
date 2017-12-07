@@ -5,34 +5,33 @@ type state = {
 };
 
 type action =
-  | ChangeHue(float)
-  | ChangeSaturation(float)
-  | ChangeLightness(float)
   | UpdateHsl;
 
 let component = ReasonReact.reducerComponent("BaseColor");
 
-let make = (~base, ~changeBase, _children) => {
+let floatValueFromEvent = (event) => event |> Utils.valueFromEvent |> float_of_string;
+
+let make = (~base, ~changeBase, ~changeBaseStr, _children) => {
   ...component,
-  initialState: () => {h: 0.0, s: 0.0, l: 0.0},
-  reducer: (action, state) =>
+  initialState: () => {h: 0., s: 0., l: 0.},
+  reducer: (action, _) =>
     switch action {
-    | ChangeHue(h) => ReasonReact.Update({...state, h})
-    | ChangeSaturation(s) => ReasonReact.Update({...state, s})
-    | ChangeLightness(l) => ReasonReact.Update({...state, l})
     | UpdateHsl =>
       let hslObject = Color.hsl(base);
       let h: float = hslObject##h;
       let s: float = hslObject##s;
       let l: float = hslObject##l;
-      Js.log("called update hsl");
       ReasonReact.Update({h, s, l})
     },
   didMount: (self) => {
     self.reduce((_) => UpdateHsl, ());
     ReasonReact.NoUpdate
   },
-  render: ({state: {h, s, l}, reduce}) =>
+  render: ({state, reduce}) => {
+    let hslObject = Color.hsl(base);
+    let h: float = hslObject##h;
+    let s: float = hslObject##s;
+    let l: float = hslObject##l;
     <form>
       <fieldset className="fieldset-reset py2">
         <div className="flex flex-center mb2">
@@ -52,27 +51,28 @@ let make = (~base, ~changeBase, _children) => {
             value=h
             labelBefore="Hue"
             labelAfter="&deg;"
-            onChange=(reduce((evt) => ChangeHue(float_of_string(Utils.valueFromEvent(evt)))))
-          />
-          <InputRange
-            name="saturation"
-            min=0
-            max="100"
-            value=s
-            labelBefore="Saturation"
             onChange=(
-              reduce((evt) => ChangeSaturation(float_of_string(Utils.valueFromEvent(evt))))
+              reduce((evt) => changeBaseStr(Color.hex_of_hsl(floatValueFromEvent(evt), s, l)))
             )
-          />
-          <InputRange
-            name="lightness"
-            min=0
-            max="100"
-            value=l
-            labelBefore="Lightness"
-            onChange=(reduce((evt) => ChangeLightness(float_of_string(Utils.valueFromEvent(evt)))))
           />
         </div>
       </fieldset>
     </form>
+    /* <InputRange
+         name="saturation"
+         min=0
+         max="100"
+         value=s
+         labelBefore="Saturation"
+         onChange=(reduce((evt) => changeBaseStr(h, floatValueFromEvent(evt), l)))
+       />
+       <InputRange
+         name="lightness"
+         min=0
+         max="100"
+         value=l
+         labelBefore="Lightness"
+         onChange=(reduce((evt) => changeBaseStr(h, s, floatValueFromEvent(evt))))
+       /> */
+  }
 };

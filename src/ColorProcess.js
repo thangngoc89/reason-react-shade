@@ -22,3 +22,5 @@ export const hsl = base =>
   Color(base)
     .hsl()
     .object()
+
+export const hex_of_hsl = (h, s, l) => Color({ h, s, l }).hex()
