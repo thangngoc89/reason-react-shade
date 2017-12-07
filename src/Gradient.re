@@ -31,7 +31,7 @@ let make = (~appInfo, _children) => {
     let gradientResult = Color.gradient(~base, ~hueShift, ~saturate, ~lighten);
     let from: string = gradientResult##from;
     let to_: string = gradientResult##to_;
-    let light: bool = gradientResult##light;
+    let light: bool = Js.to_bool(gradientResult##light);
     let gradient = linearGradient(~angle, ~from, ~to_);
     <div>
       <Background gradient light appInfo />
