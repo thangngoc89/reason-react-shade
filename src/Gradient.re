@@ -37,11 +37,7 @@ let make = (~appInfo, _children) => {
       <Background gradient light appInfo />
       <div className="md-flex">
         <div className="md-col-6 lg-col-5 px2">
-          <BaseColor
-            base
-            changeBase=(reduce((evt) => ChangeBase(Utils.valueFromEvent(evt))))
-            changeBaseStr=(reduce((hex) => ChangeBase(hex)))
-          />
+          <BaseColor base changeBase=(reduce((hex) => ChangeBase(hex))) />
         </div>
       </div>
     </div>
