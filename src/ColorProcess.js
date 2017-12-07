@@ -17,3 +17,8 @@ export const gradient = function(base, hueShift, saturate, lighten) {
   let light = baseColor.light()
   return { from, to_, light }
 }
+
+export const hsl = base =>
+  Color(base)
+    .hsl()
+    .object()
