@@ -1,6 +1,7 @@
 let component = ReasonReact.statelessComponent("InputRange");
 
-let make = (~name, ~min, ~max, ~value, ~labelBefore, ~labelAfter="", ~onChange, _children) => {
+let make =
+    (~name, ~min, ~max, ~value, ~labelBefore, ~labelAfter="", ~onChange, ~step=1.0, _children) => {
   ...component,
   render: (_self) =>
     <div className="flex-auto px2">
@@ -14,6 +15,7 @@ let make = (~name, ~min, ~max, ~value, ~labelBefore, ~labelAfter="", ~onChange, 
         onChange
         min
         max
+        step
         value=(Utils.floatToString(value))
       />
     </div>

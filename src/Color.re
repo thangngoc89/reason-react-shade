@@ -8,11 +8,11 @@ type gradientResult = {
 
 [@bs.module "./ColorProcess.js"]
 external jsGradient :
-  (~base: string, ~hueShift: int, ~saturate: int, ~lighten: int) =>
+  (~base: string, ~hueShift: int, ~saturate: float, ~lighten: float) =>
   {. "from": string, "to_": string, "light": Js.boolean} =
   "gradient";
 
-let gradient = (~base: string, ~hueShift: int, ~saturate: int, ~lighten: int) => {
+let gradient = (~base: string, ~hueShift: int, ~saturate: float, ~lighten: float) => {
   let result = jsGradient(~base, ~hueShift, ~saturate, ~lighten);
   {start: result##from, finish: result##to_, light: Js.to_bool(result##light)}
 };

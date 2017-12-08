@@ -1,16 +1,16 @@
 type state = {
   base: string,
-  saturate: int,
-  lighten: int,
+  angle: int,
   hueShift: int,
-  angle: int
+  saturate: float,
+  lighten: float
 };
 
 type action =
   | ChangeBase(string)
-  | ChangeSaturate(int)
-  | ChangeLighten(int)
-  | ChangeHueShift(int);
+  | ChangeHueShift(int)
+  | ChangeSaturate(float)
+  | ChangeLighten(float);
 
 let component = ReasonReact.reducerComponent("Gradient");
 
@@ -26,7 +26,7 @@ let make = (~appInfo, _children) => {
     | ChangeLighten(lighten) => ReasonReact.Update({...state, lighten})
     | ChangeHueShift(hueShift) => ReasonReact.Update({...state, hueShift})
     },
-  initialState: () => {base: "#00ccff", saturate: 0, lighten: 0, hueShift: 130, angle: (-90)},
+  initialState: () => {base: "#00ccff", saturate: 0., lighten: 0., hueShift: 130, angle: (-90)},
   render: ({state: {base, saturate, lighten, hueShift, angle}, reduce}) => {
     let gradientResult = Color.gradient(~base, ~hueShift, ~saturate, ~lighten);
     let gradient =
@@ -37,6 +37,47 @@ let make = (~appInfo, _children) => {
         <div className="md-col-6 lg-col-5 px2">
           <BaseColor base changeBase=(reduce((hex) => ChangeBase(hex))) />
         </div>
+        <div className="flex-auto" />
+        <form className="md-col-6 px2 py2">
+          <fieldset className="fieldset-reset no-select">
+            <legend className="h4 bold mb2"> (Utils.strEl("Gradient Spread")) </legend>
+            <div className="sm-flex mxn2 no-select">
+              <InputRange
+                name="hue shift"
+                min=(-180)
+                max="180"
+                value=(float_of_int(hueShift))
+                labelBefore="Hue Shift"
+                labelAfter="\176"
+                onChange=(
+                  reduce((evt) => ChangeHueShift(int_of_string(Utils.valueFromEvent(evt))))
+                )
+              />
+              <InputRange
+                name="saturate"
+                min=(-1)
+                max="1"
+                step=0.01
+                value=saturate
+                labelBefore="Saturate"
+                onChange=(
+                  reduce((evt) => ChangeSaturate(float_of_string(Utils.valueFromEvent(evt))))
+                )
+              />
+              <InputRange
+                name="lighten"
+                min=(-1)
+                max="1"
+                step=0.01
+                value=lighten
+                labelBefore="Lighten"
+                onChange=(
+                  reduce((evt) => ChangeLighten(float_of_string(Utils.valueFromEvent(evt))))
+                )
+              />
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   }
