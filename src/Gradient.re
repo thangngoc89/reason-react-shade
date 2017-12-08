@@ -50,8 +50,8 @@ let make = (~appInfo, _children) => {
               <div className="sm-flex mxn2 no-select">
                 <InputRange
                   name="angle"
-                  min=0
-                  max="360"
+                  min=(-180)
+                  max="180"
                   value=angle
                   displayFixedValue=true
                   labelBefore="Angle"
