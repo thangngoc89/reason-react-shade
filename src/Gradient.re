@@ -47,7 +47,7 @@ let make = (~appInfo, _children) => {
                 min=(-180)
                 max="180"
                 value=hueShift
-                truncate=true
+                displayFixedValue=true
                 labelBefore="Hue Shift"
                 labelAfter="\176"
                 onChange=(

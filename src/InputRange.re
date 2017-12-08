@@ -6,7 +6,7 @@ let make =
       ~min,
       ~max,
       ~value,
-      ~truncate=false,
+      ~displayFixedValue=false,
       ~labelBefore,
       ~labelAfter="",
       ~onChange,
@@ -15,7 +15,7 @@ let make =
     ) => {
   ...component,
   render: (_self) => {
-    let computedValue = truncate ? Utils.floatTruncateToString(value) : string_of_float(value);
+    let computedValue = displayFixedValue ? Js.Float.toFixed(value) : Js.Float.toString(value);
     <div className="flex-auto px2">
       <label className="h5 bold block">
         (Utils.strEl({j|$labelBefore $computedValue $labelAfter|j}))
@@ -28,7 +28,7 @@ let make =
         min
         max
         step
-        value=computedValue
+        value=(Js.Float.toString(value))
       />
     </div>
   }

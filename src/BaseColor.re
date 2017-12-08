@@ -26,7 +26,7 @@ let make = (~base, ~changeBase, _children) => {
             min=0
             max="360"
             value=h
-            truncate=true
+            displayFixedValue=true
             labelBefore="Hue"
             labelAfter="\176"
             onChange=((evt) => changeBase(Color.hex_of_hsl(floatValueFromEvent(evt), s, l)))
@@ -36,7 +36,7 @@ let make = (~base, ~changeBase, _children) => {
             min=0
             max="100"
             value=s
-            truncate=true
+            displayFixedValue=true
             labelBefore="Saturation"
             onChange=((evt) => changeBase(Color.hex_of_hsl(h, floatValueFromEvent(evt), l)))
           />
@@ -45,7 +45,7 @@ let make = (~base, ~changeBase, _children) => {
             min=0
             max="100"
             value=l
-            truncate=true
+            displayFixedValue=true
             labelBefore="Lightness"
             onChange=((evt) => changeBase(Color.hex_of_hsl(h, s, floatValueFromEvent(evt))))
           />
