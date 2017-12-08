@@ -1,14 +1,14 @@
 type state = {
   base: string,
   angle: int,
-  hueShift: int,
+  hueShift: float,
   saturate: float,
   lighten: float
 };
 
 type action =
   | ChangeBase(string)
-  | ChangeHueShift(int)
+  | ChangeHueShift(float)
   | ChangeSaturate(float)
   | ChangeLighten(float);
 
@@ -26,7 +26,7 @@ let make = (~appInfo, _children) => {
     | ChangeLighten(lighten) => ReasonReact.Update({...state, lighten})
     | ChangeHueShift(hueShift) => ReasonReact.Update({...state, hueShift})
     },
-  initialState: () => {base: "#00ccff", saturate: 0., lighten: 0., hueShift: 130, angle: (-90)},
+  initialState: () => {base: "#00ccff", saturate: 0., lighten: 0., hueShift: 130., angle: (-90)},
   render: ({state: {base, saturate, lighten, hueShift, angle}, reduce}) => {
     let gradientResult = Color.gradient(~base, ~hueShift, ~saturate, ~lighten);
     let gradient =
@@ -46,11 +46,11 @@ let make = (~appInfo, _children) => {
                 name="hue shift"
                 min=(-180)
                 max="180"
-                value=(float_of_int(hueShift))
+                value=hueShift
                 labelBefore="Hue Shift"
                 labelAfter="\176"
                 onChange=(
-                  reduce((evt) => ChangeHueShift(int_of_string(Utils.valueFromEvent(evt))))
+                  reduce((evt) => ChangeHueShift(float_of_string(Utils.valueFromEvent(evt))))
                 )
               />
               <InputRange
