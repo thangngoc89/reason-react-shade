@@ -1,11 +1,5 @@
 type hslModel = {. "h": float, "s": float, "l": float};
 
-/* type gradientResult = {. "from": string, "to_": string, "light": Js.boolean};
-
-   [@bs.module "./ColorProcess.js"]
-   external gradient :
-     (~base: string, ~hueShift: int, ~saturate: int, ~lighten: int) => gradientResult =
-     "gradient"; */
 type gradientResult = {
   start: string,
   finish: string,

@@ -51,3 +51,14 @@ let rgbToHsl = (source: rgb) => {
     };
   {h, s, l}
 };
+
+type jsRgb = {. "r": int, "g": int, "b": int};
+
+[@bs.module "./ColorProcess.js"] external jsHexToRgb : (~hex: string) => jsRgb = "hexToRgb";
+
+let hexToRgb = (~hex: string) => {
+  let result = jsHexToRgb(~hex);
+  {r: result##r, g: result##g, b: result##b}
+};
+
+let hexToHsl = (~hex: string) => rgbToHsl(hexToRgb(~hex));
