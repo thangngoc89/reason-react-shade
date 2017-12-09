@@ -10,7 +10,7 @@ let make = (~gradient: string, ~light: bool, ~appInfo, _children) => {
         ~minHeight="80vh",
         ()
       );
-    let preClass = "h5 right-align p1 m0 " ++ (light ? "black" : "white");
+    let preClass = "h5 right-align p1 m0 overflow-auto " ++ (light ? "black" : "white");
     <div style=backgroundStyle className="flex flex-column">
       <div className="p3"> <Header appInfo /> </div>
       <div className="flex-auto" />
