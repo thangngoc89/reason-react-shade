@@ -1,7 +1,11 @@
+type rgb = (int, int, int);
+
+type hsl = (float, float, float);
+
 module Color: {
   type t;
-  let toRgb: t => (int, int, int);
-  let toHsl: t => (float, float, float);
+  let toRgb: t => rgb;
+  let toHsl: t => hsl;
   let fromHex: string => option(t);
   let toHex: t => string;
 } = {
@@ -54,4 +58,32 @@ module Color: {
   let toHex = ({r, g, b}) =>
     b lor g lsl 8 lor r lsl 16 lor 0x1000000 |> hex_of_int |> Js.String.substr(~from=1);
 };
-/* Js.log(toHex(0, 204, 255)); */
+
+module ColorManipulation = {
+  let rotate = (degrees, color: hsl) : hsl => {
+    let (h, s, l) = color;
+    let h = mod_float(h +. degrees, 360.);
+    let h = h < 0. ? 360. +. h : h;
+    (h, s, l)
+  };
+  let saturate = (ratio, color: hsl) : hsl => {
+    let (h, s, l) = color;
+    let s = s +. s *. ratio;
+    (h, s, l)
+  };
+  let desaturate = (ratio, color: hsl) : hsl => {
+    let (h, s, l) = color;
+    let s = s -. s *. ratio;
+    (h, s, l)
+  };
+  let lighten = (ratio, color: hsl) : hsl => {
+    let (h, s, l) = color;
+    let l = l +. s *. ratio;
+    (h, s, l)
+  };
+  let darken = (ratio, color: hsl) : hsl => {
+    let (h, s, l) = color;
+    let l = l -. s *. ratio;
+    (h, s, l)
+  };
+};
