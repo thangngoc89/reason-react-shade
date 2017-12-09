@@ -1,3 +1,5 @@
+open Helpers;
+
 type state = {
   base: string,
   angle: float,
@@ -45,7 +47,7 @@ let make = (~appInfo, _children) => {
           <form className="md-col-6 px2 py2">
             <fieldset className="fieldset-reset no-select">
               <legend style=legendStyle className="h4 bold mb2">
-                (Utils.strEl("Gradient Spread"))
+                ("Gradient Spread" |> text)
               </legend>
               <div className="sm-flex mxn2 no-select">
                 <InputRange

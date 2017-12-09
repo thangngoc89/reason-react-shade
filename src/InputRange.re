@@ -1,3 +1,5 @@
+open Helpers;
+
 let component = ReasonReact.statelessComponent("InputRange");
 
 let make =
@@ -18,7 +20,7 @@ let make =
     let computedValue = displayFixedValue ? Js.Float.toFixed(value) : Js.Float.toString(value);
     <div className="flex-auto px2">
       <label className="h5 bold block">
-        (Utils.strEl({j|$labelBefore $computedValue $labelAfter|j}))
+        ({j|$labelBefore $computedValue $labelAfter|j} |> text)
       </label>
       <input
         className="col-12 dark-gray range-light"

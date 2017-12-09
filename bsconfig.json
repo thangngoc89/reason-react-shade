@@ -1,6 +1,6 @@
 {
   "name": "reason-scripts",
-  "sources": ["src"],
+  "sources": ["src", "src/utils"],
   "bs-dependencies": ["reason-react", "bs-jest", "bs-qs"],
   "reason": {
     "react-jsx": 2

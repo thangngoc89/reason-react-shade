@@ -1,3 +1,5 @@
+open Helpers;
+
 let component = ReasonReact.statelessComponent("Background");
 
 let make = (~gradient: string, ~light: bool, ~appInfo, _children) => {
@@ -15,7 +17,7 @@ let make = (~gradient: string, ~light: bool, ~appInfo, _children) => {
       <div style=backgroundStyle className="flex flex-column">
         <div className="p3"> <Header appInfo /> </div>
         <div className="flex-auto" />
-        <pre className=preClass> (Utils.strEl("background-image: " ++ gradient ++ ";")) </pre>
+        <pre className=preClass> ("background-image: " ++ gradient ++ ";" |> text) </pre>
       </div>
   }
 };

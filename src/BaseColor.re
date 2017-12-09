@@ -1,3 +1,5 @@
+open Helpers;
+
 let component = ReasonReact.statelessComponent("BaseColor");
 
 let floatValueFromEvent = (event) => event |> Utils.valueFromEvent |> float_of_string;
@@ -12,7 +14,7 @@ let make = (~base, ~changeBase, _children) => {
     <form>
       <fieldset className="fieldset-reset py2">
         <div className="flex flex-center mb2">
-          <label className="h4 bold flex-none mr2"> (Utils.strEl("Base Color")) </label>
+          <label className="h4 bold flex-none mr2"> ("Base Color" |> text) </label>
           <input
             _type="text"
             value=base
