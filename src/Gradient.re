@@ -44,31 +44,28 @@ let make = (~appInfo, _children) => {
      |> Manipulation.lighten(lighten); */
   initialState: () => {base: "00ccff", saturate: 0., lighten: 0., hueShift: 130., angle: (-90.)},
   render: ({state: {base, saturate, lighten, hueShift, angle}, reduce}) => {
-    let color = Converter.fromHex(base);
+    let color = fromHex(base);
     switch color {
     | Ok(color) =>
-      let light = Converter.light(color);
-      let hsl = Converter.toHsl(color);
+      let light = Colorable.light(color);
       let start =
-        hsl
-        |> Manipulation.rotate(hueShift)
-        |> Manipulation.saturate(saturate)
-        |> Manipulation.lighten(lighten)
-        |> Converter.fromHsl
-        |> Converter.toHex;
+        color
+        |> Colorable.rotate(hueShift)
+        |> Colorable.saturate(saturate)
+        |> Colorable.lighten(lighten)
+        |> toHex;
       Js.log(
-        hsl
-        |> Manipulation.rotate(hueShift)
-        |> Manipulation.saturate(saturate)
-        |> Manipulation.lighten(lighten)
+        color
+        |> Colorable.rotate(hueShift)
+        |> Colorable.saturate(saturate)
+        |> Colorable.lighten(lighten)
       );
       let finish =
-        hsl
-        |> Manipulation.rotate((-1.) *. hueShift)
-        |> Manipulation.desaturate(saturate)
-        |> Manipulation.darken(lighten)
-        |> Converter.fromHsl
-        |> Converter.toHex;
+        color
+        |> Colorable.rotate((-1.) *. hueShift)
+        |> Colorable.desaturate(saturate)
+        |> Colorable.darken(lighten)
+        |> toHex;
       let gradient = makeGradientCss(~angle, ~start, ~finish);
       <div>
         <Background gradient light appInfo />
@@ -76,7 +73,7 @@ let make = (~appInfo, _children) => {
           <div className="md-col-6 lg-col-5 px2">
             <FormBaseColor
               hexColor=base
-              hslColor=hsl
+              hslColor=(color |> toHsl)
               changeBase=(reduce((hex) => ChangeBase(hex)))
             />
           </div>

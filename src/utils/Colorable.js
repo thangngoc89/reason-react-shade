@@ -48,3 +48,14 @@ function hsl2rgb(hsl) {
 
   return rgb
 }
+
+equal(
+  Color({
+    h: 100,
+    s: 80,
+    l: 60,
+  })
+    .desaturate(0.5)
+    .saturationl(),
+  40
+)
