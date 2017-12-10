@@ -38,9 +38,7 @@ module Converter: {
     let t2 = ref(0.);
     let t3 = ref(0.);
     let value = ref(0.);
-    let r = ref(0);
-    let g = ref(0);
-    let b = ref(0);
+    let rgbArray = [|0, 0, 0|];
     if (s == 0.) {
       let result = l *. 255.;
       {r: int_of_float(result), g: int_of_float(result), b: int_of_float(result)}
@@ -73,15 +71,10 @@ module Converter: {
         } else {
           value := t1^
         };
-        if (i == 0) {
-          r := int_of_float(value^) * 255
-        } else if (i == 1) {
-          g := int_of_float(value^) * 255
-        } else if (i == 2) {
-          b := int_of_float(value^) * 255
-        }
+        rgbArray[i] = int_of_float(value^ *. 255.)
       };
-      {r: r^, g: g^, b: b^}
+      Js.log(rgbArray);
+      {r: rgbArray[0], g: rgbArray[1], b: rgbArray[2]}
     }
   };
   let toRgb = ({r, g, b}) => (r, g, b);

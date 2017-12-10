@@ -47,16 +47,8 @@ let make = (~appInfo, _children) => {
     let color = Converter.fromHex(base);
     switch color {
     | Ok(color) =>
-      Js.log(color);
       let light = Converter.light(color);
       let hsl = Converter.toHsl(color);
-      Js.log(
-        hsl
-        |> Manipulation.rotate(hueShift)
-        |> Manipulation.saturate(saturate)
-        |> Manipulation.lighten(lighten)
-        |> Converter.fromHsl
-      );
       let start =
         hsl
         |> Manipulation.rotate(hueShift)
