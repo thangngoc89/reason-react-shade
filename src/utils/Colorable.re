@@ -25,47 +25,65 @@ module Converter: {
     let length = String.length(hex);
     if (length === 6) {
       let num = int_of_string("0x" ++ hex);
-      Ok({r: num asr 16, g: num asr 8 land 255, b: num land 255})
+      Ok({r: num asr 16, g: num asr 8 land 0xFF, b: num land 0xFF})
     } else {
       Err("Can't parse Hex value")
     }
   };
-  let hueToRgb = (p, q, t) => {
-    let t = ref(t);
-    let result = ref(p);
-    if (t^ < 0.) {
-      t := t^ +. 1.
-    };
-    if (t^ > 1.) {
-      t := t^ -. 1.
-    };
-    if (t^ < 1. /. 6.) {
-      result := p +. (q -. p) *. 6. *. t^
-    };
-    if (t^ < 1. /. 2.) {
-      result := q
-    };
-    if (t^ < 2. /. 3.) {
-      result := p +. (q -. p) *. (2. /. 3. -. t^) *. 6.
-    };
-    result^
-  };
-  let makeResult = (r, g, b) => {
-    r: int_of_float(r *. 255.),
-    g: int_of_float(g *. 255.),
-    b: int_of_float(b *. 255.)
-  };
-  let fromHsl = ((h, s, l): hsl) : t =>
+  let fromHsl = ((h, s, l): hsl) : t => {
+    let h = h /. 360.;
+    let s = s /. 100.;
+    let l = l /. 100.;
+    let t1 = ref(0.);
+    let t2 = ref(0.);
+    let t3 = ref(0.);
+    let value = ref(0.);
+    let r = ref(0);
+    let g = ref(0);
+    let b = ref(0);
     if (s == 0.) {
-      makeResult(l, l, l)
+      let result = l *. 255.;
+      {r: int_of_float(result), g: int_of_float(result), b: int_of_float(result)}
     } else {
-      let q = l < 0.5 ? l *. (1. +. s) : l +. s -. l *. s;
-      let p = 2. *. l -. q;
-      let r = hueToRgb(p, q, h +. 1. /. 3.);
-      let g = hueToRgb(p, q, h);
-      let b = hueToRgb(p, q, h -. 1. /. 3.);
-      makeResult(r, g, b)
-    };
+      if (l < 0.5) {
+        t2 := l *. (1. +. s)
+      } else {
+        t2 := l +. s -. l *. s
+      };
+      let oneThird = 1. /. 3.;
+      t1 := 2. *. l -. t2^;
+      for (i in 0 to 2) {
+        t3 := h +. oneThird *. (-. (float_of_int(i) -. 1.));
+        t3 :=
+          (
+            if (t3^ < 0.) {
+              t3^ +. 1.
+            } else if (t3^ > 1.) {
+              t3^ -. 1.
+            } else {
+              t3^
+            }
+          );
+        if (6. *. t3^ < 1.) {
+          value := t1^ +. (t2^ -. t1^) *. 6. *. t3^
+        } else if (2. *. t3^ < 1.) {
+          value := t2^
+        } else if (3. *. t3^ < 2.) {
+          value := t1^ +. (t2^ -. t1^) *. (2. /. 3. -. t3^) *. 6.
+        } else {
+          value := t1^
+        };
+        if (i == 0) {
+          r := int_of_float(value^) * 255
+        } else if (i == 1) {
+          g := int_of_float(value^) * 255
+        } else if (i == 2) {
+          b := int_of_float(value^) * 255
+        }
+      };
+      {r: r^, g: g^, b: b^}
+    }
+  };
   let toRgb = ({r, g, b}) => (r, g, b);
   let toHsl = ({r, g, b}) => {
     let r = float_of_int(r) /. 255.;
@@ -92,7 +110,7 @@ module Converter: {
       } else {
         c /. (1. -. abs_float(2. *. l -. 1.))
       };
-    (h, s, l)
+    (h, s *. 100., l *. 100.)
   };
   /* Optimized JS code should be
      function (r,g,b) => ((b | g << 8 | r << 16) | 0x1000000).toString(16).substring(1);

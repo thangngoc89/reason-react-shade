@@ -4,20 +4,17 @@ let component = ReasonReact.statelessComponent("BaseColor");
 
 let floatValueFromEvent = (event) => event |> Utils.valueFromEvent |> float_of_string;
 
-let make = (~base, ~changeBase, _children) => {
+let make = (~hexColor, ~hslColor, ~changeBase, _children) => {
   ...component,
   render: (_self) => {
-    let hslObject = Color.hsl(base);
-    let h: float = hslObject##h;
-    let s: float = hslObject##s;
-    let l: float = hslObject##l;
+    let (h, s, l) = hslColor;
     <form>
       <fieldset className="fieldset-reset py2">
         <div className="flex flex-center mb2">
           <label className="h4 bold flex-none mr2"> ("Base Color" |> text) </label>
           <input
             _type="text"
-            value=base
+            value=hexColor
             className="m0 flex-auto field xfield-light"
             onChange=((evt) => changeBase(Utils.valueFromEvent(evt)))
           />

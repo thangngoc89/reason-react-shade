@@ -3,3 +3,7 @@ let valueFromEvent = (evt) : string => (
                                          |> ReactEventRe.Form.target
                                          |> ReactDOMRe.domElementToObj
                                        )##value;
+
+type result('o, 'e) =
+  | Ok('o)
+  | Err('e);
