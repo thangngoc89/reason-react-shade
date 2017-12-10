@@ -2,7 +2,7 @@ type rgb = (int, int, int);
 
 type hsl = (float, float, float);
 
-module Color: {
+module Converter: {
   type t;
   let toRgb: t => rgb;
   let toHsl: t => hsl;
@@ -59,7 +59,7 @@ module Color: {
     b lor g lsl 8 lor r lsl 16 lor 0x1000000 |> hex_of_int |> Js.String.substr(~from=1);
 };
 
-module ColorManipulation = {
+module Manipulation = {
   let rotate = (degrees, color: hsl) : hsl => {
     let (h, s, l) = color;
     let h = mod_float(h +. degrees, 360.);
