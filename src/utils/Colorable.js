@@ -1,4 +1,6 @@
-module.exports = function(hsl) {
+hsl2rgb([62, 120, 50])
+
+function hsl2rgb(hsl) {
   var h = hsl[0] / 360
   var s = hsl[1] / 100
   var l = hsl[2] / 100

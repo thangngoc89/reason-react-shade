@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "bsWatch": "bsb -make-world -w",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

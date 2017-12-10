@@ -31,6 +31,7 @@ module Converter: {
     }
   };
   let fromHsl = ((h, s, l): hsl) : t => {
+    Js.log2("original hsl", (h, s, l));
     let h = h /. 360.;
     let s = s /. 100.;
     let l = l /. 100.;

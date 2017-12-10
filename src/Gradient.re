@@ -56,6 +56,12 @@ let make = (~appInfo, _children) => {
         |> Manipulation.lighten(lighten)
         |> Converter.fromHsl
         |> Converter.toHex;
+      Js.log(
+        hsl
+        |> Manipulation.rotate(hueShift)
+        |> Manipulation.saturate(saturate)
+        |> Manipulation.lighten(lighten)
+      );
       let finish =
         hsl
         |> Manipulation.rotate((-1.) *. hueShift)
